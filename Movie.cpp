@@ -44,16 +44,99 @@ class Staff{
     }
 };
 
+class MovieHouse{
+
+private:
+string MovieHouseName;
+vector <Movie> Movies;
+vector <Staff> StaffMembers;
+
+public:
+
+void setMovieHouseName(string name){
+  this->MovieHouseName=name;
+}
+
+void AddMovies(Movie movie1){
+    Movies.push_back(movie1);
+}
+
+void AddStaff(Staff person1){
+    StaffMembers.push_back(person1);
+}
+
+void GetMovieHouseDetails(){
+    cout<<"Movie House Name: "<<this->MovieHouseName<<endl;
+    cout<<"Movies: "<<endl;
+    for(int i=0; i<Movies.size(); i++){
+
+        Movies[i].MovieDetailsDisplay();
+    }
+  cout<<"Staff Members: "<<endl;
+    for(int j=0; j<StaffMembers.size(); j++){
+
+       StaffMembers[j].StaffDetailsDisplay();
+    }
+}
+};
+
 int main(){
-Movie movie1;
-Staff Person1;
+MovieHouse MovieHouse1;
+string name;
+int NumberofMovies;
+int NumberofStaff;
 
-movie1.AssignMovieDetails("Inception",3,true);
-movie1.MovieDetailsDisplay();
+cout<<"Enter a MovieHouse name: ";
+getline(cin,name);
+MovieHouse1.setMovieHouseName(name);
 
+cout<<"Enter Number of Movies: ";
+cin>>NumberofMovies;
+
+for(int i=0; i<NumberofMovies; i++){
+    string name;
+    int time;
+    bool screen;
+    int num;
+    cout<<"Enter details of "<<i+1<<" movie : "<<endl;
+    cout<<"Movie Name: ";
+    cin.ignore();
+    getline(cin,name);
+    cout<<"Movie Duration: ";
+    cin>>time;
+    cout<<"Is the movie in 3D? (1 for Yes, 0 for No): ";
+    cin>>num;
+    screen=(num==1);
+    Movie movie1;
+    movie1.AssignMovieDetails(name,time,screen);
+    MovieHouse1.AddMovies(movie1);
+}
+cout<<"Enter Number of staff: ";
+cin>>NumberofStaff;
+
+for(int i=0; i<NumberofStaff; i++){
+    string personName;
+    string pos;
+    double s;
+
+    cout<<"Enter details of "<<i+1<<" staff members : "<<endl;
+
+    cout<<"Staff name: ";
+    cin.ignore();
+    getline(cin,personName);
+
+    cout<<"Staff Position: ";
+    getline(cin,pos);
+
+    cout<<"Staff Salary: ";
+    cin>>s;
+
+    Staff person1;
+    person1.AssignStaffDetails(personName,pos,s);
+    MovieHouse1.AddStaff(person1);
+
+}
 cout<<endl;
-
-Person1.AssignStaffDetails("Kelly","Manager",15000);
-Person1.StaffDetailsDisplay();
-
+MovieHouse1.GetMovieHouseDetails();
+return 0;
 };

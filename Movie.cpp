@@ -10,8 +10,16 @@ class Movie{
 
     public:
 
-    void MovieDisplay(){
-        cout<<"This a movie class"<<endl;
+    void AssignMovieDetails(string title, int timetaken, bool screen){
+        this->MovieName=title;
+        this->MovieDuration=timetaken;
+        this->is3D=screen;
+    }
+
+    void MovieDetailsDisplay(){
+        cout<<"Movie name: "<<this->MovieName<<endl;
+        cout<<"Movie Duration: "<<this->MovieDuration<<endl;
+        cout<<"Movie Screen Details: "<<(this->is3D? "3D":"2D")<<endl;
     }
 };
 
@@ -23,8 +31,16 @@ class Staff{
 
     public:
 
-    void StaffDisplay(){
-      cout<<"I am a staff person in movie house."<<endl;
+    void AssignStaffDetails(string n, string pos, double s){
+        this->Name=n;
+        this->Position=pos;
+        this->salary=s;
+    }
+
+    void StaffDetailsDisplay(){
+      cout<<"Staff Name: "<<this->Name<<endl;
+      cout<<"Staff Position: "<<this->Position<<endl;
+      cout<<"Staff salary: "<<this->salary<<endl;
     }
 };
 
@@ -32,7 +48,12 @@ int main(){
 Movie movie1;
 Staff Person1;
 
-movie1.MovieDisplay();
-Person1.StaffDisplay();
+movie1.AssignMovieDetails("Inception",3,true);
+movie1.MovieDetailsDisplay();
+
+cout<<endl;
+
+Person1.AssignStaffDetails("Kelly","Manager",15000);
+Person1.StaffDetailsDisplay();
 
 };

@@ -71,8 +71,17 @@ private:
 string MovieHouseName;
 vector <Movie*> Movies;
 vector <Staff*> StaffMembers;
+static int MovieHouseCount;
 
 public:
+
+MovieHouse(){
+    MovieHouseCount++;
+}
+
+static int getMovieHouse(){
+return MovieHouseCount;
+}
 
 void setMovieHouseName(string name){
   this->MovieHouseName=name;
@@ -100,8 +109,15 @@ void GetMovieHouseDetails(){
     }
 }
 };
+int MovieHouse::MovieHouseCount=0;
 
 int main(){
+int MovieHouseCount;
+cout<<"Enter number of movie houses you want to create: ";
+cin>>MovieHouseCount;
+cin.ignore();
+
+for(int j=0; j<MovieHouseCount; j++){
 MovieHouse *MovieHouse1=new MovieHouse();
 string name;
 int NumberofMovies;
@@ -113,6 +129,7 @@ MovieHouse1->setMovieHouseName(name);
 
 cout<<"Enter Number of Movies: ";
 cin>>NumberofMovies;
+cin.ignore();
 
 for(int i=0; i<NumberofMovies; i++){
     string name;
@@ -128,12 +145,14 @@ for(int i=0; i<NumberofMovies; i++){
     cout<<"Is the movie in 3D? (1 for Yes, 0 for No): ";
     cin>>num;
     screen=(num==1);
+    cin.ignore();
     Movie* movie1=new Movie;
     movie1->AssignMovieDetails(name,time,screen);
     MovieHouse1->AddMovies(movie1);
 }
 cout<<"Enter Number of staff: ";
 cin>>NumberofStaff;
+cin.ignore();
 
 for(int i=0; i<NumberofStaff; i++){
     string personName;
@@ -151,6 +170,7 @@ for(int i=0; i<NumberofStaff; i++){
 
     cout<<"Staff Salary: ";
     cin>>s;
+    cin.ignore();
 
     Staff* person1=new Staff;
     person1->AssignStaffDetails(personName,pos,s);
@@ -160,5 +180,11 @@ for(int i=0; i<NumberofStaff; i++){
 cout<<endl;
 MovieHouse1->GetMovieHouseDetails();
 delete MovieHouse1;
+}
+
+cout<<"Total number of movies added: "<<Movie::getMovieCount()<<endl;
+cout<<"Total number of staff members: "<<Staff::getStaffCount()<<endl;
+cout<<"Total number of Movie Houses: "<<MovieHouse::getMovieHouse()<<endl;
+
 return 0;
 };

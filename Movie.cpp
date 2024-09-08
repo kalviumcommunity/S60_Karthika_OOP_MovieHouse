@@ -7,8 +7,17 @@ class Movie{
     string MovieName;
     int MovieDuration;
     bool is3D;
+    static int MovieCount;
 
     public:
+
+    Movie(){
+        MovieCount++;
+    }
+
+    static int getMovieCount(){
+        return MovieCount;
+    }
 
     void AssignMovieDetails(string title, int timetaken, bool screen){
         this->MovieName=title;
@@ -23,13 +32,23 @@ class Movie{
     }
 };
 
+int Movie::MovieCount=0;
+
 class Staff{
     private:
     string Name;
     string Position;
     double salary;
+    static int StaffCount;
 
     public:
+       Staff(){
+        StaffCount++;
+    }
+
+    static int getStaffCount(){
+        return StaffCount;
+    }
 
     void AssignStaffDetails(string n, string pos, double s){
         this->Name=n;
@@ -44,12 +63,14 @@ class Staff{
     }
 };
 
+int Staff::StaffCount=0;
+
 class MovieHouse{
 
 private:
 string MovieHouseName;
-vector <Movie> Movies;
-vector <Staff> StaffMembers;
+vector <Movie*> Movies;
+vector <Staff*> StaffMembers;
 
 public:
 
@@ -57,11 +78,11 @@ void setMovieHouseName(string name){
   this->MovieHouseName=name;
 }
 
-void AddMovies(Movie movie1){
+void AddMovies(Movie* movie1){
     Movies.push_back(movie1);
 }
 
-void AddStaff(Staff person1){
+void AddStaff(Staff* person1){
     StaffMembers.push_back(person1);
 }
 
@@ -70,25 +91,25 @@ void GetMovieHouseDetails(){
     cout<<"Movies: "<<endl;
     for(int i=0; i<Movies.size(); i++){
 
-        Movies[i].MovieDetailsDisplay();
+        Movies[i]->MovieDetailsDisplay();
     }
   cout<<"Staff Members: "<<endl;
     for(int j=0; j<StaffMembers.size(); j++){
 
-       StaffMembers[j].StaffDetailsDisplay();
+       StaffMembers[j]->StaffDetailsDisplay();
     }
 }
 };
 
 int main(){
-MovieHouse MovieHouse1;
+MovieHouse *MovieHouse1=new MovieHouse();
 string name;
 int NumberofMovies;
 int NumberofStaff;
 
 cout<<"Enter a MovieHouse name: ";
 getline(cin,name);
-MovieHouse1.setMovieHouseName(name);
+MovieHouse1->setMovieHouseName(name);
 
 cout<<"Enter Number of Movies: ";
 cin>>NumberofMovies;
@@ -107,9 +128,9 @@ for(int i=0; i<NumberofMovies; i++){
     cout<<"Is the movie in 3D? (1 for Yes, 0 for No): ";
     cin>>num;
     screen=(num==1);
-    Movie movie1;
-    movie1.AssignMovieDetails(name,time,screen);
-    MovieHouse1.AddMovies(movie1);
+    Movie* movie1=new Movie;
+    movie1->AssignMovieDetails(name,time,screen);
+    MovieHouse1->AddMovies(movie1);
 }
 cout<<"Enter Number of staff: ";
 cin>>NumberofStaff;
@@ -131,12 +152,13 @@ for(int i=0; i<NumberofStaff; i++){
     cout<<"Staff Salary: ";
     cin>>s;
 
-    Staff person1;
-    person1.AssignStaffDetails(personName,pos,s);
-    MovieHouse1.AddStaff(person1);
+    Staff* person1=new Staff;
+    person1->AssignStaffDetails(personName,pos,s);
+    MovieHouse1->AddStaff(person1);
 
 }
 cout<<endl;
-MovieHouse1.GetMovieHouseDetails();
+MovieHouse1->GetMovieHouseDetails();
+delete MovieHouse1;
 return 0;
 };

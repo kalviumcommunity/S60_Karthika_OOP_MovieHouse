@@ -11,7 +11,10 @@ class Movie{
 
     public:
 
-    Movie(){
+    Movie(string movie="",int time=0,bool value=false){
+        MovieName=movie;
+        MovieDuration=time;
+        is3D=value;
         MovieCount++;
     }
 
@@ -19,17 +22,28 @@ class Movie{
         return MovieCount;
     }
 
-    void AssignMovieDetails(string title, int timetaken, bool screen){
-        this->MovieName=title;
-        this->MovieDuration=timetaken;
-        this->is3D=screen;
+    void AssignMovieDetails(string title="", int timetaken=0, bool screen=false){
+        MovieName=title;
+        MovieDuration=timetaken;
+        is3D=screen;
+    }
+
+       string getMovieName(){
+        return MovieName;
+    }
+    int getMovieDuration(){
+        return MovieDuration;
+    }
+    bool getis3D(){
+        return is3D;
     }
 
     void MovieDetailsDisplay(){
-        cout<<"Movie name: "<<this->MovieName<<endl;
-        cout<<"Movie Duration: "<<this->MovieDuration<<endl;
-        cout<<"Movie Screen Details: "<<(this->is3D? "3D":"2D")<<endl;
+        cout<<"Movie name: "<<getMovieName()<<endl;
+        cout<<"Movie Duration: "<<getMovieDuration()<<endl;
+        cout<<"Movie Screen Details: "<<(getis3D()?"3D":"2D")<<endl;
     }
+
 };
 
 int Movie::MovieCount=0;
@@ -56,10 +70,22 @@ class Staff{
         this->salary=s;
     }
 
+    string getName(){
+        return Name;
+    }
+
+    string getPosition(){
+        return Position;
+    }
+
+    double getSalary(){
+        return salary;
+    }
+
     void StaffDetailsDisplay(){
-      cout<<"Staff Name: "<<this->Name<<endl;
-      cout<<"Staff Position: "<<this->Position<<endl;
-      cout<<"Staff salary: "<<this->salary<<endl;
+      cout<<"Staff Name: "<<getName()<<endl;
+      cout<<"Staff Position: "<<getPosition()<<endl;
+      cout<<"Staff salary: "<<getSalary()<<endl;
     }
 };
 

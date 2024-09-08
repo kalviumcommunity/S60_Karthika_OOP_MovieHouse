@@ -7,8 +7,17 @@ class Movie{
     string MovieName;
     int MovieDuration;
     bool is3D;
+    static int MovieCount;
 
     public:
+
+    Movie(){
+        MovieCount++;
+    }
+
+    static int getMovieCount(){
+        return MovieCount;
+    }
 
     void AssignMovieDetails(string title, int timetaken, bool screen){
         this->MovieName=title;
@@ -23,13 +32,23 @@ class Movie{
     }
 };
 
+int Movie::MovieCount=0;
+
 class Staff{
     private:
     string Name;
     string Position;
     double salary;
+    static int StaffCount;
 
     public:
+       Staff(){
+        StaffCount++;
+    }
+
+    static int getStaffCount(){
+        return StaffCount;
+    }
 
     void AssignStaffDetails(string n, string pos, double s){
         this->Name=n;
@@ -43,6 +62,8 @@ class Staff{
       cout<<"Staff salary: "<<this->salary<<endl;
     }
 };
+
+int Staff::StaffCount=0;
 
 class MovieHouse{
 

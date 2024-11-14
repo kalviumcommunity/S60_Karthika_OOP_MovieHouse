@@ -15,7 +15,7 @@ public:
 int MovieCount::count = 0;
 
 // movie class manages movie data
-class Movie {
+class Movie {                 //Movie class can be substitued by its sub-class IMAXMovie
 private:
     string movieName;
     int movieDuration;
@@ -65,7 +65,7 @@ public:
 };
 
 // Staff class manages the staff data
-class Staff {
+class Staff {                //Staff class can be substitued by its sub-class manager
 private:
     string name;
     string position;

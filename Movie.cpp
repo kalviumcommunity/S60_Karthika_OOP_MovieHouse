@@ -29,12 +29,6 @@ public:
         return MovieCount;
     }
 
-    void AssignMovieDetails(string title = "", int timetaken = 0, bool screen = false) {
-        MovieName = title;
-        MovieDuration = timetaken;
-        is3D = screen;
-    }
-
     string getMovieName() const {
         return MovieName;
     }
@@ -85,19 +79,13 @@ public:
     }
 
     // Destructor
-    ~Staff() {
+    virtual ~Staff() {
         cout << "Staff destroyed: " << Name << endl;
         StaffCount--;
     }
 
     static int getStaffCount() {
         return StaffCount;
-    }
-
-    void AssignStaffDetails(string n, string pos, double s) {
-        this->Name = n;
-        this->Position = pos;
-        this->salary = s;
     }
 
     string getName() const {
@@ -112,11 +100,7 @@ public:
         return salary;
     }
 
-    virtual void StaffDetailsDisplay() const {
-        cout << "Staff Name: " << getName() << endl;
-        cout << "Staff Position: " << getPosition() << endl;
-        cout << "Staff Salary: " << getSalary() << endl;
-    }
+    virtual void StaffDetailsDisplay() const = 0;  // Pure virtual function
 };
 
 int Staff::StaffCount = 0;
@@ -130,7 +114,9 @@ public:
         : Staff(n, pos, s), officeLocation(location) {}
 
     void StaffDetailsDisplay() const override {
-        Staff::StaffDetailsDisplay();
+        cout << "Name: " << getName() << endl;
+        cout << "Position: " << getPosition() << endl;
+        cout << "Salary: " << getSalary() << endl;
         cout << "Office Location: " << officeLocation << endl;
     }
 };
@@ -226,28 +212,6 @@ int main() {
             MovieHouse1->AddMovies(movie1);
         }
 
-        cout << "Enter Number of staff: ";
-        cin >> NumberofStaff;
-        cin.ignore();
-
-        for (int i = 0; i < NumberofStaff; i++) {
-            string personName;
-            string pos;
-            double s;
-
-            cout << "Enter details of " << i + 1 << " staff members : " << endl;
-            cout << "Staff name: ";
-            getline(cin, personName);
-            cout << "Staff Position: ";
-            getline(cin, pos);
-            cout << "Staff Salary: ";
-            cin >> s;
-            cin.ignore();
-
-            Staff* person1 = new Staff(personName, pos, s);
-            MovieHouse1->AddStaff(person1);
-        }
-
         cout << endl;
         MovieHouse1->GetMovieHouseDetails();
         delete MovieHouse1;
@@ -265,9 +229,6 @@ int main() {
 
     delete myMovieHouse;
 
-    cout << "Total number of movies added: " << Movie::getMovieCount() << endl;
-    cout << "Total number of staff members: " << Staff::getStaffCount() << endl;
-    cout << "Total number of Movie Houses: " << MovieHouse::getMovieHouse() << endl;
-
     return 0;
 }
+ 

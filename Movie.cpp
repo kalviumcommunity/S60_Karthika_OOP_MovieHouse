@@ -2,12 +2,23 @@
 #include <vector>
 using namespace std;
 
-class Movie {
+class MovieCount {             //Manages Movie count
+private:
+    static int count;
+
+public:
+    static void incrementCount() { count++; }
+    static void decrementCount() { count--; }
+    static int getCount() { return count; }
+};
+
+int MovieCount::count = 0;
+
+class Movie {               //represents a movie with its details
 private:
     string MovieName;
     int MovieDuration;
     bool is3D;
-    static int MovieCount;
 
 public:
     // Constructor
@@ -15,18 +26,14 @@ public:
         MovieName = movie;
         MovieDuration = time;
         is3D = value;
-        MovieCount++;
+        MovieCount::incrementCount();
         cout << "Movie created: " << MovieName << endl;
     }
 
     // Destructor
     ~Movie() {
         cout << "Movie destroyed: " << MovieName << endl;
-        MovieCount--;
-    }
-
-    static int getMovieCount() {
-        return MovieCount;
+        MovieCount::decrementCount();
     }
 
     string getMovieName() const {
@@ -48,9 +55,7 @@ public:
     }
 };
 
-int Movie::MovieCount = 0;
-
-class IMAXMovie : public Movie {
+class IMAXMovie : public Movie {                //Inherited from movie class with additional properties
 private:
     string soundSystem;
 
@@ -64,7 +69,7 @@ public:
     }
 };
 
-class Staff {
+class Staff {                 //represents a staff with details
 private:
     string Name;
     string Position;
@@ -72,13 +77,11 @@ private:
     static int StaffCount;
 
 public:
-    // Constructor
     Staff(string n = "", string pos = "", double s = 0.0) : Name(n), Position(pos), salary(s) {
         StaffCount++;
         cout << "Staff created: " << Name << endl;
     }
 
-    // Destructor
     virtual ~Staff() {
         cout << "Staff destroyed: " << Name << endl;
         StaffCount--;
@@ -105,7 +108,7 @@ public:
 
 int Staff::StaffCount = 0;
 
-class Manager : public Staff {
+class Manager : public Staff {              //inherited from staff class with some additional properties
 private:
     string officeLocation;
 
@@ -121,7 +124,7 @@ public:
     }
 };
 
-class MovieHouse {
+class MovieHouse {               //Manages movies and staff within a movie house.
 private:
     string MovieHouseName;
     vector<Movie*> Movies;
@@ -129,13 +132,11 @@ private:
     static int MovieHouseCount;
 
 public:
-    // Constructor
     MovieHouse(string name = "") : MovieHouseName(name) {
         MovieHouseCount++;
         cout << "MovieHouse created: " << MovieHouseName << endl;
     }
 
-    // Destructor
     ~MovieHouse() {
         cout << "MovieHouse destroyed: " << MovieHouseName << endl;
         for (Movie* movie : Movies) delete movie;
@@ -174,7 +175,7 @@ public:
 
 int MovieHouse::MovieHouseCount = 0;
 
-int main() {
+int main() {                                     //manages user interactions
     int MovieHouseCount;
     cout << "Enter number of movie houses you want to create: ";
     cin >> MovieHouseCount;
@@ -231,4 +232,3 @@ int main() {
 
     return 0;
 }
- 

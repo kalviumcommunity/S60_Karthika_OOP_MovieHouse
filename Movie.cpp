@@ -35,19 +35,19 @@ public:
         is3D = screen;
     }
 
-    string getMovieName() {
+    string getMovieName() const {
         return MovieName;
     }
     
-    int getMovieDuration() {
+    int getMovieDuration() const {
         return MovieDuration;
     }
     
-    bool getis3D() {
+    bool getis3D() const {
         return is3D;
     }
 
-    void MovieDetailsDisplay() {
+    virtual void MovieDetailsDisplay() const {
         cout << "Movie name: " << getMovieName() << endl;
         cout << "Movie Duration: " << getMovieDuration() << endl;
         cout << "Movie Screen Details: " << (getis3D() ? "3D" : "2D") << endl;
@@ -55,6 +55,20 @@ public:
 };
 
 int Movie::MovieCount = 0;
+
+class IMAXMovie : public Movie {
+private:
+    string soundSystem;
+
+public:
+    IMAXMovie(string movie, int time, bool value, string soundSys)
+        : Movie(movie, time, value), soundSystem(soundSys) {}
+
+    void MovieDetailsDisplay() const override {
+        Movie::MovieDetailsDisplay();
+        cout << "Sound System: " << soundSystem << endl;
+    }
+};
 
 class Staff {
 private:
@@ -68,13 +82,11 @@ public:
     Staff(string n = "", string pos = "", double s = 0.0) : Name(n), Position(pos), salary(s) {
         StaffCount++;
         cout << "Staff created: " << Name << endl;
-        cout<<StaffCount<<endl;
     }
 
     // Destructor
     ~Staff() {
         cout << "Staff destroyed: " << Name << endl;
-        cout<<StaffCount<<endl;
         StaffCount--;
     }
 
@@ -88,22 +100,22 @@ public:
         this->salary = s;
     }
 
-    string getName() const{
+    string getName() const {
         return Name;
     }
     
-    string getPosition() const{
+    string getPosition() const {
         return Position;
     }
     
-    double getSalary() const{
+    double getSalary() const {
         return salary;
     }
 
-    void StaffDetailsDisplay() const{
+    virtual void StaffDetailsDisplay() const {
         cout << "Staff Name: " << getName() << endl;
         cout << "Staff Position: " << getPosition() << endl;
-        cout << "Staff salary: " << getSalary() << endl;
+        cout << "Staff Salary: " << getSalary() << endl;
     }
 };
 
@@ -114,21 +126,11 @@ private:
     string officeLocation;
 
 public:
-    // Constructor that also takes office location
     Manager(string n, string pos, double s, string location)
         : Staff(n, pos, s), officeLocation(location) {}
 
-    void AssignManagerDetails(string n, string pos, double s, string location) {
-        AssignStaffDetails(n, pos, s);
-        officeLocation = location;
-    }
-
-    string getOfficeLocation() const {
-        return officeLocation;
-    }
-
-    void ManagerDetailsDisplay() const { 
-       Staff::StaffDetailsDisplay(); 
+    void StaffDetailsDisplay() const override {
+        Staff::StaffDetailsDisplay();
         cout << "Office Location: " << officeLocation << endl;
     }
 };
@@ -171,7 +173,7 @@ public:
         StaffMembers.push_back(person1);
     }
 
-    void GetMovieHouseDetails() {
+    void GetMovieHouseDetails() const {
         cout << "Movie House Name: " << this->MovieHouseName << endl;
         cout << "Movies: " << endl;
         for (int i = 0; i < Movies.size(); i++) {
@@ -192,28 +194,12 @@ int main() {
     cin >> MovieHouseCount;
     cin.ignore();
 
-    for (int j =0; j < MovieHouseCount; j++) {
+    for (int j = 0; j < MovieHouseCount; j++) {
         MovieHouse* MovieHouse1 = new MovieHouse();
         string name;
         int NumberofMovies;
         int NumberofStaff;
-        /////
-        string managername;
-        int managersalary;
-        string location;
-        
-        cout<<"Enter MovieHouse manager name: ";
-        getline(cin,managername);
-        cout<<"Enter Manager Salary: ";
-        cin>>managersalary;
-        cout<<"Enter Location: ";
-        cin.ignore();
-        getline(cin,location);
-        
-        Manager manager1(managername, "Manager", managersalary, location);
-        manager1.ManagerDetailsDisplay(); 
-        cout << endl;
-        //////
+
         cout << "Enter a MovieHouse name: ";
         getline(cin, name);
         MovieHouse1->setMovieHouseName(name);
@@ -229,7 +215,6 @@ int main() {
             int num;
             cout << "Enter details of " << i + 1 << " movie : " << endl;
             cout << "Movie Name: ";
-            // cin.ignore();
             getline(cin, name);
             cout << "Movie Duration: ";
             cin >> time;
@@ -237,8 +222,7 @@ int main() {
             cin >> num;
             screen = (num == 1);
             cin.ignore();
-            Movie* movie1 = new Movie;
-            movie1->AssignMovieDetails(name, time, screen);
+            Movie* movie1 = new Movie(name, time, screen);
             MovieHouse1->AddMovies(movie1);
         }
 
@@ -252,20 +236,15 @@ int main() {
             double s;
 
             cout << "Enter details of " << i + 1 << " staff members : " << endl;
-
             cout << "Staff name: ";
-            // cin.ignore();
             getline(cin, personName);
-
             cout << "Staff Position: ";
             getline(cin, pos);
-
             cout << "Staff Salary: ";
             cin >> s;
             cin.ignore();
 
-            Staff* person1 = new Staff;
-            person1->AssignStaffDetails(personName, pos, s);
+            Staff* person1 = new Staff(personName, pos, s);
             MovieHouse1->AddStaff(person1);
         }
 
@@ -273,6 +252,18 @@ int main() {
         MovieHouse1->GetMovieHouseDetails();
         delete MovieHouse1;
     }
+
+    MovieHouse* myMovieHouse = new MovieHouse("CineMax");
+
+    Movie* imaxMovie = new IMAXMovie("Inception", 148, true, "Dolby Atmos");
+    myMovieHouse->AddMovies(imaxMovie);
+
+    Staff* manager = new Manager("John Doe", "Manager", 50000, "Downtown Office");
+    myMovieHouse->AddStaff(manager);
+
+    myMovieHouse->GetMovieHouseDetails();
+
+    delete myMovieHouse;
 
     cout << "Total number of movies added: " << Movie::getMovieCount() << endl;
     cout << "Total number of staff members: " << Staff::getStaffCount() << endl;

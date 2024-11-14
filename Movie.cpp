@@ -68,11 +68,13 @@ public:
     Staff(string n = "", string pos = "", double s = 0.0) : Name(n), Position(pos), salary(s) {
         StaffCount++;
         cout << "Staff created: " << Name << endl;
+        cout<<StaffCount<<endl;
     }
 
     // Destructor
     ~Staff() {
         cout << "Staff destroyed: " << Name << endl;
+        cout<<StaffCount<<endl;
         StaffCount--;
     }
 
@@ -86,19 +88,19 @@ public:
         this->salary = s;
     }
 
-    string getName() {
+    string getName() const{
         return Name;
     }
     
-    string getPosition() {
+    string getPosition() const{
         return Position;
     }
     
-    double getSalary() {
+    double getSalary() const{
         return salary;
     }
 
-    void StaffDetailsDisplay() {
+    void StaffDetailsDisplay() const{
         cout << "Staff Name: " << getName() << endl;
         cout << "Staff Position: " << getPosition() << endl;
         cout << "Staff salary: " << getSalary() << endl;
@@ -106,6 +108,30 @@ public:
 };
 
 int Staff::StaffCount = 0;
+
+class Manager : public Staff {
+private:
+    string officeLocation;
+
+public:
+    // Constructor that also takes office location
+    Manager(string n, string pos, double s, string location)
+        : Staff(n, pos, s), officeLocation(location) {}
+
+    void AssignManagerDetails(string n, string pos, double s, string location) {
+        AssignStaffDetails(n, pos, s);
+        officeLocation = location;
+    }
+
+    string getOfficeLocation() const {
+        return officeLocation;
+    }
+
+    void ManagerDetailsDisplay() const { 
+       Staff::StaffDetailsDisplay(); 
+        cout << "Office Location: " << officeLocation << endl;
+    }
+};
 
 class MovieHouse {
 private:
@@ -171,7 +197,23 @@ int main() {
         string name;
         int NumberofMovies;
         int NumberofStaff;
-
+        /////
+        string managername;
+        int managersalary;
+        string location;
+        
+        cout<<"Enter MovieHouse manager name: ";
+        getline(cin,managername);
+        cout<<"Enter Manager Salary: ";
+        cin>>managersalary;
+        cout<<"Enter Location: ";
+        cin.ignore();
+        getline(cin,location);
+        
+        Manager manager1(managername, "Manager", managersalary, location);
+        manager1.ManagerDetailsDisplay(); 
+        cout << endl;
+        //////
         cout << "Enter a MovieHouse name: ";
         getline(cin, name);
         MovieHouse1->setMovieHouseName(name);

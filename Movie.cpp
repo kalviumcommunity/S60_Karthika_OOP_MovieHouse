@@ -4,10 +4,10 @@ using namespace std;
 
 class Movie{
     private :
-    string MovieName;
-    int MovieDuration;
-    bool is3D;
-    static int MovieCount;
+    string MovieName;      //hidden
+    int MovieDuration;     //hidden
+    bool is3D;             //hidden
+    static int MovieCount; //hidden
 
     public:
 
@@ -38,7 +38,7 @@ class Movie{
         return is3D;
     }
 
-    void MovieDetailsDisplay(){
+    void MovieDetailsDisplay(){                 //function to display details
         cout<<"Movie name: "<<getMovieName()<<endl;
         cout<<"Movie Duration: "<<getMovieDuration()<<endl;
         cout<<"Movie Screen Details: "<<(getis3D()?"3D":"2D")<<endl;
@@ -50,10 +50,10 @@ int Movie::MovieCount=0;
 
 class Staff{
     private:
-    string Name;
-    string Position;
-    double salary;
-    static int StaffCount;
+    string Name;             //hidden
+    string Position;         //hidden
+    double salary;           //hidden
+    static int StaffCount;   //hidden
 
     public:
        Staff(){
@@ -82,7 +82,7 @@ class Staff{
         return salary;
     }
 
-    void StaffDetailsDisplay(){
+    void StaffDetailsDisplay(){                   //function to display details
       cout<<"Staff Name: "<<getName()<<endl;
       cout<<"Staff Position: "<<getPosition()<<endl;
       cout<<"Staff salary: "<<getSalary()<<endl;
@@ -94,10 +94,10 @@ int Staff::StaffCount=0;
 class MovieHouse{
 
 private:
-string MovieHouseName;
-vector <Movie*> Movies;
-vector <Staff*> StaffMembers;
-static int MovieHouseCount;
+string MovieHouseName;             //hidden
+vector <Movie*> Movies;            //hidden
+vector <Staff*> StaffMembers;      //hidden
+static int MovieHouseCount;        //hidden
 
 public:
 
@@ -121,7 +121,7 @@ void AddStaff(Staff* person1){
     StaffMembers.push_back(person1);
 }
 
-void GetMovieHouseDetails(){
+void GetMovieHouseDetails(){                               //function to display details
     cout<<"Movie House Name: "<<this->MovieHouseName<<endl;
     cout<<"Movies: "<<endl;
     for(int i=0; i<Movies.size(); i++){

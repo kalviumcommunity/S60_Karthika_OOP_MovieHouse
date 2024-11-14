@@ -2,7 +2,7 @@
 #include <vector>
 using namespace std;
 
-class MovieCount {             //Manages Movie count
+class MovieCount {  // Manages Movie count
 private:
     static int count;
 
@@ -14,48 +14,41 @@ public:
 
 int MovieCount::count = 0;
 
-class Movie {               //represents a movie with its details
+// movie class manages movie data
+class Movie {
 private:
-    string MovieName;
-    int MovieDuration;
+    string movieName;
+    int movieDuration;
     bool is3D;
 
 public:
-    // Constructor
-    Movie(string movie = "", int time = 0, bool value = false) {
-        MovieName = movie;
-        MovieDuration = time;
-        is3D = value;
+    Movie(string movie = "", int time = 0, bool value = false)
+        : movieName(movie), movieDuration(time), is3D(value) {
         MovieCount::incrementCount();
-        cout << "Movie created: " << MovieName << endl;
+        cout << "Movie created: " << movieName << endl;
     }
 
-    // Destructor
-    ~Movie() {
-        cout << "Movie destroyed: " << MovieName << endl;
+    virtual ~Movie() {
+        cout << "Movie destroyed: " << movieName << endl;
         MovieCount::decrementCount();
     }
 
     string getMovieName() const {
-        return MovieName;
+        return movieName;
     }
-    
+
     int getMovieDuration() const {
-        return MovieDuration;
+        return movieDuration;
     }
-    
-    bool getis3D() const {
+
+    bool getIs3D() const {
         return is3D;
     }
 
-    virtual void MovieDetailsDisplay() const {
-        cout << "Movie name: " << getMovieName() << endl;
-        cout << "Movie Duration: " << getMovieDuration() << endl;
-        cout << "Movie Screen Details: " << (getis3D() ? "3D" : "2D") << endl;
-    }
+    virtual void movieDetailsDisplay() const = 0;  // Pure virtual function
 };
 
-class IMAXMovie : public Movie {                //Inherited from movie class with additional properties
+class IMAXMovie : public Movie {           //a type of movie inherited from movie class
 private:
     string soundSystem;
 
@@ -63,52 +56,47 @@ public:
     IMAXMovie(string movie, int time, bool value, string soundSys)
         : Movie(movie, time, value), soundSystem(soundSys) {}
 
-    void MovieDetailsDisplay() const override {
-        Movie::MovieDetailsDisplay();
+    void movieDetailsDisplay() const override {
+        cout << "Movie name: " << getMovieName() << endl;
+        cout << "Movie Duration: " << getMovieDuration() << endl;
+        cout << "Movie Screen Details: " << (getIs3D() ? "3D" : "2D") << endl;
         cout << "Sound System: " << soundSystem << endl;
     }
 };
 
-class Staff {                 //represents a staff with details
+// Staff class manages the staff data
+class Staff {
 private:
-    string Name;
-    string Position;
+    string name;
+    string position;
     double salary;
-    static int StaffCount;
 
 public:
-    Staff(string n = "", string pos = "", double s = 0.0) : Name(n), Position(pos), salary(s) {
-        StaffCount++;
-        cout << "Staff created: " << Name << endl;
+    Staff(string n = "", string pos = "", double s = 0.0)
+        : name(n), position(pos), salary(s) {
+        cout << "Staff created: " << name << endl;
     }
 
     virtual ~Staff() {
-        cout << "Staff destroyed: " << Name << endl;
-        StaffCount--;
-    }
-
-    static int getStaffCount() {
-        return StaffCount;
+        cout << "Staff destroyed: " << name << endl;
     }
 
     string getName() const {
-        return Name;
+        return name;
     }
-    
+
     string getPosition() const {
-        return Position;
+        return position;
     }
-    
+
     double getSalary() const {
         return salary;
     }
 
-    virtual void StaffDetailsDisplay() const = 0;  // Pure virtual function
+    virtual void staffDetailsDisplay() const = 0;  // Pure virtual function
 };
 
-int Staff::StaffCount = 0;
-
-class Manager : public Staff {              //inherited from staff class with some additional properties
+class Manager : public Staff {                  //Inherited from staff class
 private:
     string officeLocation;
 
@@ -116,7 +104,7 @@ public:
     Manager(string n, string pos, double s, string location)
         : Staff(n, pos, s), officeLocation(location) {}
 
-    void StaffDetailsDisplay() const override {
+    void staffDetailsDisplay() const override {
         cout << "Name: " << getName() << endl;
         cout << "Position: " << getPosition() << endl;
         cout << "Salary: " << getSalary() << endl;
@@ -124,78 +112,72 @@ public:
     }
 };
 
-class MovieHouse {               //Manages movies and staff within a movie house.
+// MovieHouse class manages movies and staff
+class MovieHouse {
 private:
-    string MovieHouseName;
-    vector<Movie*> Movies;
-    vector<Staff*> StaffMembers;
-    static int MovieHouseCount;
+    string movieHouseName;
+    vector<Movie*> movies;
+    vector<Staff*> staffMembers;
 
 public:
-    MovieHouse(string name = "") : MovieHouseName(name) {
-        MovieHouseCount++;
-        cout << "MovieHouse created: " << MovieHouseName << endl;
+    MovieHouse(string name = "") : movieHouseName(name) {
+        cout << "MovieHouse created: " << movieHouseName << endl;
     }
 
     ~MovieHouse() {
-        cout << "MovieHouse destroyed: " << MovieHouseName << endl;
-        for (Movie* movie : Movies) delete movie;
-        for (Staff* staff : StaffMembers) delete staff;
-        MovieHouseCount--;
-    }
-
-    static int getMovieHouse() {
-        return MovieHouseCount;
+        cout << "MovieHouse destroyed: " << movieHouseName << endl;
+        for (Movie* movie : movies) delete movie;
+        for (Staff* staff : staffMembers) delete staff;
     }
 
     void setMovieHouseName(string name) {
-        this->MovieHouseName = name;
+        movieHouseName = name;
     }
 
-    void AddMovies(Movie* movie1) {
-        Movies.push_back(movie1);
+    void addMovie(Movie* movie) {
+        movies.push_back(movie);
     }
 
-    void AddStaff(Staff* person1) {
-        StaffMembers.push_back(person1);
+    void addStaff(Staff* staff) {
+        staffMembers.push_back(staff);
     }
 
-    void GetMovieHouseDetails() const {
-        cout << "Movie House Name: " << this->MovieHouseName << endl;
+    void displayDetails() const {
+        cout << "Movie House Name: " << movieHouseName << endl;
         cout << "Movies: " << endl;
-        for (int i = 0; i < Movies.size(); i++) {
-            Movies[i]->MovieDetailsDisplay();
+        for (const Movie* movie : movies) {
+            movie->movieDetailsDisplay();
         }
         cout << "Staff Members: " << endl;
-        for (int j = 0; j < StaffMembers.size(); j++) {
-            StaffMembers[j]->StaffDetailsDisplay();
+        for (const Staff* staff : staffMembers) {
+            staff->staffDetailsDisplay();
         }
     }
 };
 
-int MovieHouse::MovieHouseCount = 0;
-
-int main() {                                     //manages user interactions
-    int MovieHouseCount;
+// Main function for interaction
+int main() {
+    int movieHouseCount;
     cout << "Enter number of movie houses you want to create: ";
-    cin >> MovieHouseCount;
+    cin >> movieHouseCount;
     cin.ignore();
 
-    for (int j = 0; j < MovieHouseCount; j++) {
-        MovieHouse* MovieHouse1 = new MovieHouse();
+   
+    for (int j = 0; j < movieHouseCount; j++) {
+        MovieHouse* movieHouse = new MovieHouse();
         string name;
-        int NumberofMovies;
-        int NumberofStaff;
+        int numberOfMovies, numberOfStaff;
 
         cout << "Enter a MovieHouse name: ";
         getline(cin, name);
-        MovieHouse1->setMovieHouseName(name);
+        movieHouse->setMovieHouseName(name);
 
-        cout << "Enter Number of Movies: ";
-        cin >> NumberofMovies;
+        cout << "Enter number of Movies: ";
+        cin >> numberOfMovies;
         cin.ignore();
 
-        for (int i = 0; i < NumberofMovies; i++) {
+
+        for (int i = 0; i < numberOfMovies; i++) {
             string name;
             int time;
             bool screen;
@@ -209,26 +191,45 @@ int main() {                                     //manages user interactions
             cin >> num;
             screen = (num == 1);
             cin.ignore();
-            Movie* movie1 = new Movie(name, time, screen);
-            MovieHouse1->AddMovies(movie1);
+            Movie* movie = new IMAXMovie(name, time, screen, "Dolby Atmos");
+            movieHouse->addMovie(movie);
         }
 
-        cout << endl;
-        MovieHouse1->GetMovieHouseDetails();
-        delete MovieHouse1;
+       
+        cout << "Enter number of Staff members: ";
+        cin >> numberOfStaff;
+        cin.ignore();
+
+        for (int i = 0; i < numberOfStaff; i++) {
+            string name, position, location;
+            double salary;
+            cout << "Enter details for Staff member " << i + 1 << ": " << endl;
+            cout << "Name: ";
+            getline(cin, name);
+            cout << "Position: ";
+            getline(cin, position);
+            cout << "Salary: ";
+            cin >> salary;
+            cin.ignore();
+            cout << "Office Location: ";
+            getline(cin, location);
+            Staff* staff = new Manager(name, position, salary, location);
+            movieHouse->addStaff(staff);
+        }
+
+        movieHouse->displayDetails();
+        delete movieHouse;  
     }
 
+   
     MovieHouse* myMovieHouse = new MovieHouse("CineMax");
-
     Movie* imaxMovie = new IMAXMovie("Inception", 148, true, "Dolby Atmos");
-    myMovieHouse->AddMovies(imaxMovie);
-
+    myMovieHouse->addMovie(imaxMovie);
     Staff* manager = new Manager("John Doe", "Manager", 50000, "Downtown Office");
-    myMovieHouse->AddStaff(manager);
+    myMovieHouse->addStaff(manager);
+    myMovieHouse->displayDetails();
 
-    myMovieHouse->GetMovieHouseDetails();
-
-    delete myMovieHouse;
+    delete myMovieHouse;  
 
     return 0;
 }
